@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">Sleep Timer</string>
+
+    <string name="tab_timer">Timer</string>
+    <string name="tab_options">Options</string>
+
+    <plurals name="timer_minutes">
+        <item quantity="one">%d minute</item>
+        <item quantity="other">%d minutes</item>
+    </plurals>
+
+    <string name="timer_less_than_minute">>Less than one minute remaining</string>
+    <plurals name="timer_remaining">
+        <item quantity="one">%d minute remaining</item>
+        <item quantity="other">%d minutes remaining</item>
+    </plurals>
+
+    <string name="timer_end">End</string>
+    <string name="timer_extend">Add 10 minutes</string>
+
+    <string name="notification_channel_name">Remaining time</string>
+    <string name="notification_channel_description">Displays the remaining time on the sleep timer</string>
+
+    <string name="option_home_screen">Go to home screen</string>
+    <string name="option_wifi_off">Turn off WiFi</string>
+    <string name="option_bluetooth_off">Turn off bluetooth</string>
+    <string name="option_audio_off">Stop audio</string>
+</resources>
