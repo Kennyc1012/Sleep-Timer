@@ -34,13 +34,12 @@ class TimerService : Service() {
         const val CHANNEL_ID = "TimerNotificationId"
 
         fun createIntent(context: Context, duration: Long): Intent {
-            return Intent(context, TimerService::class.java)
-                    .putExtra(EXTRA_DURATION, duration)
+            return Intent(context, TimerService::class.java).putExtra(EXTRA_DURATION, duration)
         }
     }
 
     private val binder = TimerBinder()
-    private lateinit var notifManager: NotificationManagerCompat
+    private lateinit var notificationManager: NotificationManagerCompat
     private var countDownTimer: CountDownTimer? = null
     private var firstTick = true
     private var endTime = 0L
@@ -48,7 +47,7 @@ class TimerService : Service() {
     override fun onCreate() {
         super.onCreate()
         Log.v(TAG, "onCreate")
-        notifManager = NotificationManagerCompat.from(applicationContext)
+        notificationManager = NotificationManagerCompat.from(applicationContext)
         registerReceiver(receiver, IntentFilter(ACTION_BROADCAST_NOTIFICATION))
     }
 
@@ -88,8 +87,8 @@ class TimerService : Service() {
         countDownTimer = object : CountDownTimer(duration, DateUtils.MINUTE_IN_MILLIS) {
             override fun onFinish() {
                 Log.v(TAG, "onFinish")
-                stopSelf()
                 onSleepTimerEnd()
+                stopSelf()
             }
 
             override fun onTick(millisUntilFinished: Long) {
@@ -97,8 +96,7 @@ class TimerService : Service() {
 
                 if (!firstTick) {
                     val minutes = (millisUntilFinished / DateUtils.MINUTE_IN_MILLIS).toInt()
-                    val notification = createNotification(minutes)
-                    notifManager.notify(NOTIFICATION_ID, notification)
+                    notificationManager.notify(NOTIFICATION_ID, createNotification(minutes))
                 }
 
                 firstTick = false
@@ -122,7 +120,6 @@ class TimerService : Service() {
                 .addAction(R.drawable.ic_add_white_24dp, getString(R.string.timer_extend), addPIntent)
                 .addAction(R.drawable.ic_timer_off_white_24dp, getString(R.string.timer_end), cancelPIntent)
                 .build()
-
     }
 
     private fun onSleepTimerEnd() {
