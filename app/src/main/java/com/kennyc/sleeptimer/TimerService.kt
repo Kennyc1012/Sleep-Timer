@@ -173,7 +173,10 @@ class TimerService : Service() {
                 val addTime = it.getBooleanExtra(EXTRA_ADD_TIME, false)
 
                 when {
-                    cancel -> stopSelf()
+                    cancel -> {
+                        stopSelf()
+                        applicationContext.sendBroadcast(Intent(ACTION_BROADCAST_TIMER_END))
+                    }
 
                     addTime -> {
                         val elapsedTime = endTime - System.currentTimeMillis()
