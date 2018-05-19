@@ -18,7 +18,7 @@ class OptionsFragment : Fragment() {
         viewModel = ViewModelProviders.of(this).get(OptionsViewModel::class.java)
         viewModel.screenOff.observe(this, Observer { value -> onScreenOffToggle(value) })
         viewModel.wiFiOff.observe(this, Observer { value -> onWiFiToggle(value) })
-        viewModel.bluetoothOff.observe(this, Observer { value -> onBluetoothfToggle(value) })
+        viewModel.bluetoothOff.observe(this, Observer { value -> onBluetoothToggle(value) })
         viewModel.audioOff.observe(this, Observer { value -> onAudioToggled(value) })
     }
 
@@ -46,7 +46,7 @@ class OptionsFragment : Fragment() {
         }
     }
 
-    private fun onBluetoothfToggle(isOn: Boolean?) {
+    private fun onBluetoothToggle(isOn: Boolean?) {
         isOn?.let {
             optionsBluetoothCB.isChecked = isOn
         }

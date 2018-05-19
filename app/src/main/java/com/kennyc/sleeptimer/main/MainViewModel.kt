@@ -2,7 +2,6 @@ package com.kennyc.sleeptimer.main
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import android.util.Log
 import android.view.MenuItem
 
 class MainViewModel : ViewModel() {

@@ -34,8 +34,7 @@ class TimerFragment : Fragment() {
         timerSeekBar.setOnValueChangedListener { time -> viewModel.setTime(time) }
 
         timerFab.setOnClickListener {
-            val isActive = viewModel.isTimerActive.value
-            val active = if (isActive != null) isActive else false
+            val active = viewModel.isTimerActive.value ?: false
             viewModel.setTimerActive(!active)
         }
 

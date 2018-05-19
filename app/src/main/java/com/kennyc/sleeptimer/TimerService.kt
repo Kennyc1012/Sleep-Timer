@@ -25,11 +25,11 @@ class TimerService : Service() {
 
     companion object {
         const val TAG = "TimerService"
-        const val ACTION_BROADCAST_NOTIFICATION = "$TAG}.EXTRA.BROADCAST_NOTIFICATION"
-        const val ACTION_BROADCAST_TIMER_END = "$TAG}.EXTRA.BROADCAST_TIMER_END"
+        const val ACTION_BROADCAST_NOTIFICATION = "$TAG.EXTRA.BROADCAST_NOTIFICATION"
+        const val ACTION_BROADCAST_TIMER_END = "$TAG.EXTRA.BROADCAST_TIMER_END"
         const val EXTRA_DURATION = "$TAG.END_TIME"
-        const val EXTRA_ADD_TIME = "${TAG}.EXTRA.ADD_TIME"
-        const val EXTRA_CANCEL = "${TAG}.EXTRA.CANCEL"
+        const val EXTRA_ADD_TIME = "$TAG.EXTRA.ADD_TIME"
+        const val EXTRA_CANCEL = "$TAG.EXTRA.CANCEL"
         const val NOTIFICATION_ID = 999
         const val CHANNEL_ID = "TimerNotificationId"
 
