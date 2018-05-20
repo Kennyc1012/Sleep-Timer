@@ -7,18 +7,17 @@ import android.os.Bundle
 import android.os.IBinder
 import android.support.v4.app.Fragment
 import android.text.format.DateUtils
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.kennyc.sleeptimer.R
 import com.kennyc.sleeptimer.TimerService
 import kotlinx.android.synthetic.main.fragment_timer.*
+import timber.log.Timber
 
 
 class TimerFragment : Fragment() {
 
-    val TAG = "TimerFragment"
     private lateinit var viewModel: TimerViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -100,19 +99,19 @@ class TimerFragment : Fragment() {
     private val connection = object : ServiceConnection {
 
         override fun onServiceConnected(className: ComponentName, service: IBinder) {
-            Log.v(TAG, "onServiceConnected")
+            Timber.v("onServiceConnected")
             viewModel.setTimerActive(true)
         }
 
         override fun onServiceDisconnected(arg0: ComponentName) {
-            Log.v(TAG, "onServiceDisconnected")
+            Timber.v("onServiceDisconnected")
         }
     }
 
     private val receiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             intent?.let {
-                Log.v(TimerService.TAG, "onReceive")
+                Timber.v("onReceive")
                 viewModel.setTimerActive(false)
             }
         }

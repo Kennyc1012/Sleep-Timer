@@ -5,13 +5,13 @@ import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.text.format.DateUtils
-import android.util.Log
 import android.view.MenuItem
 import com.kennyc.sleeptimer.R
 import com.kennyc.sleeptimer.TimerService
 import com.kennyc.sleeptimer.options.OptionsFragment
 import com.kennyc.sleeptimer.timer.TimerFragment
 import kotlinx.android.synthetic.main.activity_main.*
+import timber.log.Timber
 
 
 class MainActivity : AppCompatActivity() {
@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun onTabChanged(menuItem: MenuItem?) {
         menuItem?.let {
-            Log.v(TAG, "onTabChanged: $menuItem")
+            Timber.v("onTabChanged: $menuItem")
 
             when (it.itemId) {
                 R.id.tabTimer -> {
@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun onAppShortcut(fromShortcut: Boolean?) {
         fromShortcut?.let {
-            Log.v(TAG, "onAppShortcut: $it")
+            Timber.v("onAppShortcut: $it")
 
             when (fromShortcut) {
                 true -> {

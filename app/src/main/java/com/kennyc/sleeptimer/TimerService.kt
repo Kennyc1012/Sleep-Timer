@@ -17,8 +17,8 @@ import android.preference.PreferenceManager
 import android.support.v4.app.NotificationCompat
 import android.support.v4.app.NotificationManagerCompat
 import android.text.format.DateUtils
-import android.util.Log
 import com.kennyc.sleeptimer.options.OptionsViewModel
+import timber.log.Timber
 
 
 class TimerService : Service() {
@@ -46,20 +46,20 @@ class TimerService : Service() {
 
     override fun onCreate() {
         super.onCreate()
-        Log.v(TAG, "onCreate")
+        Timber.v("onCreate")
         notificationManager = NotificationManagerCompat.from(applicationContext)
         registerReceiver(receiver, IntentFilter(ACTION_BROADCAST_NOTIFICATION))
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        Log.v(TAG, "onStartCommand")
+        Timber.v("onStartCommand")
 
         var duration = 0L
 
         if (intent != null && intent.hasExtra(EXTRA_DURATION)) {
             duration = intent.getLongExtra(EXTRA_DURATION, 0)
         } else {
-            Log.w(TAG, "Did not receive any extras")
+            Timber.w("Did not receive any extras")
             stopSelf()
         }
 
@@ -76,7 +76,7 @@ class TimerService : Service() {
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.v(TAG, "onDestroy")
+        Timber.v("onDestroy")
         countDownTimer?.cancel()
         unregisterReceiver(receiver)
     }
@@ -86,13 +86,13 @@ class TimerService : Service() {
 
         countDownTimer = object : CountDownTimer(duration, DateUtils.MINUTE_IN_MILLIS) {
             override fun onFinish() {
-                Log.v(TAG, "onFinish")
+                Timber.v("onFinish")
                 onSleepTimerEnd()
                 stopSelf()
             }
 
             override fun onTick(millisUntilFinished: Long) {
-                Log.v(TAG, "onTick, millisUntilFinished: $millisUntilFinished")
+                Timber.v("onTick, millisUntilFinished: $millisUntilFinished")
 
                 if (!firstTick) {
                     val minutes = (millisUntilFinished / DateUtils.MINUTE_IN_MILLIS).toInt()
@@ -123,7 +123,7 @@ class TimerService : Service() {
     }
 
     private fun onSleepTimerEnd() {
-        Log.v(TAG, "onSleepTimerEnd")
+        Timber.v("onSleepTimerEnd")
         val sharedPref = PreferenceManager.getDefaultSharedPreferences(applicationContext)
         val screenOff = sharedPref.getBoolean(OptionsViewModel.KEY_SCREEN_OFF, true)
         val wiFiOff = sharedPref.getBoolean(OptionsViewModel.KEY_WIFI_OFF, false)
@@ -131,7 +131,7 @@ class TimerService : Service() {
         val audioOff = sharedPref.getBoolean(OptionsViewModel.KEY_AUDIO_OFF, false)
 
         if (screenOff) {
-            Log.v(TAG, "Turning off screen")
+            Timber.v("Turning off screen")
             val startMain = Intent(Intent.ACTION_MAIN)
             startMain.addCategory(Intent.CATEGORY_HOME)
             startMain.flags = Intent.FLAG_ACTIVITY_NEW_TASK
@@ -139,18 +139,18 @@ class TimerService : Service() {
         }
 
         if (wiFiOff) {
-            Log.v(TAG, "Turning off WiFi")
+            Timber.v("Turning off WiFi")
             val wifiManager = this.getSystemService(Context.WIFI_SERVICE) as WifiManager
             wifiManager.isWifiEnabled = false
         }
 
         if (bluetoothOff) {
-            Log.v(TAG, "Turning off bluetooth")
+            Timber.v("Turning off bluetooth")
             BluetoothAdapter.getDefaultAdapter()?.let { if (it.isEnabled) it.disable() }
         }
 
         if (audioOff) {
-            Log.v(TAG, "Turning off audio")
+            Timber.v("Turning off audio")
             val am = getSystemService(Context.AUDIO_SERVICE) as AudioManager
             am.requestAudioFocus(null, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN)
         }
@@ -165,7 +165,7 @@ class TimerService : Service() {
     private val receiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             intent?.let {
-                Log.v(TAG, "onReceive")
+                Timber.v("onReceive")
                 val cancel = it.getBooleanExtra(EXTRA_CANCEL, false)
                 val addTime = it.getBooleanExtra(EXTRA_ADD_TIME, false)
 

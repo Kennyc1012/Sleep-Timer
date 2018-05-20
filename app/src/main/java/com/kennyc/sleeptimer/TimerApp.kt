@@ -4,6 +4,7 @@ import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.os.Build
+import timber.log.Timber
 
 class TimerApp : Application() {
 
@@ -16,5 +17,7 @@ class TimerApp : Application() {
             channel.description = getString(R.string.notification_channel_description)
             getSystemService(NotificationManager::class.java).createNotificationChannel(channel)
         }
+
+        if (BuildConfig.DEBUG) Timber.plant(Timber.DebugTree())
     }
 }
