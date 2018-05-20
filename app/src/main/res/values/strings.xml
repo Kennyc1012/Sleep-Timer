@@ -25,4 +25,6 @@
     <string name="option_wifi_off">Turn off WiFi</string>
     <string name="option_bluetooth_off">Turn off bluetooth</string>
     <string name="option_audio_off">Stop audio</string>
+
+    <string name="shortcut_start_timer">Start timer</string>
 </resources>

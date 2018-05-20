@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:enabled="true"
+        android:icon="@drawable/ic_shortcut_timer"
+        android:shortcutId="start_timer"
+        android:shortcutShortLabel="@string/shortcut_start_timer">
+        <intent
+            android:action="MainActivity.ACTION.START_TIMER"
+            android:targetClass="com.kennyc.sleeptimer.main.MainActivity"
+            android:targetPackage="com.kennyc.sleeptimer" />
+    </shortcut>
+</shortcuts>

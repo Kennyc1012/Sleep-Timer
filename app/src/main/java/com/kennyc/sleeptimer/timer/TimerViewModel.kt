@@ -10,6 +10,7 @@ import androidx.core.content.edit
 class TimerViewModel(app: Application) : AndroidViewModel(app) {
     companion object {
         const val KEY_LAST_SELECTED_TIME = "TimerViewModel.LAST_SELECTED_TIME"
+        const val DEFAULT_TIME = 60
     }
 
     private val sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(app)
@@ -31,7 +32,7 @@ class TimerViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     fun getLastTimerSelected() {
-        val lastTime = sharedPreferences.getInt(KEY_LAST_SELECTED_TIME, 60)
+        val lastTime = sharedPreferences.getInt(KEY_LAST_SELECTED_TIME, DEFAULT_TIME)
         time.value = Pair(lastTime, true)
     }
 }
