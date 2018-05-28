@@ -16,10 +16,10 @@ class OptionsFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(OptionsViewModel::class.java)
-        viewModel.screenOff.observe(this, Observer { value -> onScreenOffToggle(value) })
-        viewModel.wiFiOff.observe(this, Observer { value -> onWiFiToggle(value) })
-        viewModel.bluetoothOff.observe(this, Observer { value -> onBluetoothToggle(value) })
-        viewModel.audioOff.observe(this, Observer { value -> onAudioToggled(value) })
+        viewModel.screenOff.observe(this, Observer { value -> value?.let { onScreenOffToggle(it) } })
+        viewModel.wiFiOff.observe(this, Observer { value -> value?.let { onWiFiToggle(it) } })
+        viewModel.bluetoothOff.observe(this, Observer { value -> value?.let { onBluetoothToggle(it) } })
+        viewModel.audioOff.observe(this, Observer { value -> value?.let { onAudioToggled(it) } })
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -34,27 +34,19 @@ class OptionsFragment : Fragment() {
         optionsAudioCB.setOnCheckedChangeListener { _, isChecked -> viewModel.setOptionValue(OptionsViewModel.KEY_AUDIO_OFF, isChecked) }
     }
 
-    private fun onScreenOffToggle(isOn: Boolean?) {
-        isOn?.let {
-            optionsHomeCB.isChecked = isOn
-        }
+    private fun onScreenOffToggle(isOn: Boolean) {
+        optionsHomeCB.isChecked = isOn
     }
 
-    private fun onWiFiToggle(isOn: Boolean?) {
-        isOn?.let {
-            optionsWiFiCB.isChecked = isOn
-        }
+    private fun onWiFiToggle(isOn: Boolean) {
+        optionsWiFiCB.isChecked = isOn
     }
 
-    private fun onBluetoothToggle(isOn: Boolean?) {
-        isOn?.let {
-            optionsBluetoothCB.isChecked = isOn
-        }
+    private fun onBluetoothToggle(isOn: Boolean) {
+        optionsBluetoothCB.isChecked = isOn
     }
 
-    private fun onAudioToggled(isOn: Boolean?) {
-        isOn?.let {
-            optionsAudioCB.isChecked = isOn
-        }
+    private fun onAudioToggled(isOn: Boolean) {
+        optionsAudioCB.isChecked = isOn
     }
 }

@@ -28,8 +28,8 @@ class TimerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(TimerViewModel::class.java)
-        viewModel.isTimerActive.observe(this, Observer { active -> onTimerActive(active) })
-        viewModel.time.observe(this, Observer { time -> onTimeChange(time) })
+        viewModel.isTimerActive.observe(this, Observer { active -> active?.let { onTimerActive(it) } })
+        viewModel.time.observe(this, Observer { time -> time?.let { onTimeChange(it) } })
         timerSeekBar.setOnValueChangedListener { time -> viewModel.setTime(time) }
 
         timerFab.setOnClickListener {
@@ -43,35 +43,31 @@ class TimerFragment : Fragment() {
         }
     }
 
-    private fun onTimeChange(time: Pair<Int, Boolean>?) {
-        time?.let {
-            val time = it.first
-            val updateSeekBar = it.second
+    private fun onTimeChange(result: Pair<Int, Boolean>) {
+        val time = result.first
+        val updateSeekBar = result.second
 
-            when {
-                time < 1 -> timerTime.text = getString(R.string.timer_less_than_minute)
+        when {
+            time < 1 -> timerTime.text = getString(R.string.timer_less_than_minute)
 
-                time >= 1 -> timerTime.text = resources.getQuantityString(R.plurals.timer_minutes, time, time)
-            }
-
-            if (updateSeekBar) timerSeekBar.value = time
+            time >= 1 -> timerTime.text = resources.getQuantityString(R.plurals.timer_minutes, time, time)
         }
+
+        if (updateSeekBar) timerSeekBar.value = time
     }
 
-    private fun onTimerActive(active: Boolean?) {
-        active?.let {
-            when (it) {
-                true -> {
-                    viewModel.saveLastTimerSettings(timerSeekBar.value)
-                    timerFab.setImageResource(R.drawable.ic_timer_off_white_24dp)
-                    val duration = timerSeekBar.value * DateUtils.MINUTE_IN_MILLIS
-                    context?.let { it.startService(TimerService.createIntent(it, duration)) }
-                }
+    private fun onTimerActive(active: Boolean) {
+        when (active) {
+            true -> {
+                viewModel.saveLastTimerSettings(timerSeekBar.value)
+                timerFab.setImageResource(R.drawable.ic_timer_off_white_24dp)
+                val duration = timerSeekBar.value * DateUtils.MINUTE_IN_MILLIS
+                context?.let { it.startService(TimerService.createIntent(it, duration)) }
+            }
 
-                false -> {
-                    timerFab.setImageResource(R.drawable.ic_done_white_24dp)
-                    context?.let { it.stopService(TimerService.createIntent(it, 0)) }
-                }
+            false -> {
+                timerFab.setImageResource(R.drawable.ic_done_white_24dp)
+                context?.let { it.stopService(TimerService.createIntent(it, 0)) }
             }
         }
     }
@@ -110,7 +106,7 @@ class TimerFragment : Fragment() {
 
     private val receiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
-            intent?.let {
+            if (TimerService.ACTION_BROADCAST_TIMER_END == intent?.action) {
                 Timber.v("onReceive")
                 viewModel.setTimerActive(false)
             }

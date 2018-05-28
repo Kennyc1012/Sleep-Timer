@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
         viewModel.currentTab.observe(this, Observer { tab -> onTabChanged(tab) })
         viewModel.fromAppShortcut.observe(this, Observer { result -> onAppShortcut(result) })
-        viewModel.checkForAppShirtcut(intent)
+        viewModel.checkForAppShortcut(intent)
     }
 
     private fun onTabChanged(menuItem: MenuItem?) {
@@ -37,14 +37,14 @@ class MainActivity : AppCompatActivity() {
 
             when (it.itemId) {
                 R.id.tabTimer -> {
-                    supportActionBar?.let { it.title = getString(R.string.tab_timer) }
+                    supportActionBar?.title = getString(R.string.tab_timer)
                     supportFragmentManager.beginTransaction()
                             .replace(R.id.mainContent, TimerFragment())
                             .commit()
                 }
 
                 R.id.tabOptions -> {
-                    supportActionBar?.let { it.title = getString(R.string.tab_options) }
+                    supportActionBar?.title = getString(R.string.tab_options)
                     supportFragmentManager.beginTransaction()
                             .replace(R.id.mainContent, OptionsFragment())
                             .commit()
@@ -60,7 +60,7 @@ class MainActivity : AppCompatActivity() {
         fromShortcut?.let {
             Timber.v("onAppShortcut: $it")
 
-            when (fromShortcut) {
+            when (it) {
                 true -> {
                     val lastTime = viewModel.getLastSavedTimer()
                     val duration = lastTime * DateUtils.MINUTE_IN_MILLIS
@@ -76,7 +76,7 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     if (viewModel.currentTab.value == null) mainTabs.selectedItemId = R.id.tabTimer
-                    supportActionBar?.let { it.title = getString(R.string.tab_timer) }
+                    supportActionBar?.title = getString(R.string.tab_timer)
                 }
             }
         }

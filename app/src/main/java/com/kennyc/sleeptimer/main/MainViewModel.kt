@@ -19,9 +19,9 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         if (currentMenuItem == null || currentMenuItem != menuItem) currentTab.value = menuItem
     }
 
-    fun checkForAppShirtcut(intent: Intent?) {
+    fun checkForAppShortcut(intent: Intent?) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
-            intent?.let { fromAppShortcut.value = MainActivity.ACTION_START_TIME == intent.action }
+            fromAppShortcut.value = MainActivity.ACTION_START_TIME == intent?.action
         } else {
             fromAppShortcut.value = false
         }
