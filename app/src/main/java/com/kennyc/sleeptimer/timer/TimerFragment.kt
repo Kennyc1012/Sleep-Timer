@@ -1,15 +1,15 @@
 package com.kennyc.sleeptimer.timer
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.content.*
 import android.os.Bundle
 import android.os.IBinder
-import android.support.v4.app.Fragment
 import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.kennyc.sleeptimer.R
 import com.kennyc.sleeptimer.TimerService
 import kotlinx.android.synthetic.main.fragment_timer.*
@@ -43,9 +43,9 @@ class TimerFragment : Fragment() {
         }
     }
 
-    private fun onTimeChange(result: Pair<Int, Boolean>) {
-        val time = result.first
-        val updateSeekBar = result.second
+    private fun onTimeChange(result:TimeUpdate) {
+        val time = result.time
+        val updateSeekBar = result.updateSeekBar
 
         when {
             time < 1 -> timerTime.text = getString(R.string.timer_less_than_minute)

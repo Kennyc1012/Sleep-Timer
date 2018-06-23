@@ -1,15 +1,13 @@
 package com.kennyc.sleeptimer.main
 
-import android.app.Application
-import android.arch.lifecycle.AndroidViewModel
-import android.arch.lifecycle.MutableLiveData
 import android.content.Intent
-import android.os.Build
-import android.preference.PreferenceManager
+import android.content.SharedPreferences
 import android.view.MenuItem
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.kennyc.sleeptimer.timer.TimerViewModel
 
-class MainViewModel(app: Application) : AndroidViewModel(app) {
+class MainViewModel(private val pref: SharedPreferences) : ViewModel() {
 
     val currentTab = MutableLiveData<MenuItem>()
     val fromAppShortcut = MutableLiveData<Boolean>()
@@ -20,15 +18,10 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     fun checkForAppShortcut(intent: Intent?) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
-            fromAppShortcut.value = MainActivity.ACTION_START_TIME == intent?.action
-        } else {
-            fromAppShortcut.value = false
-        }
+        fromAppShortcut.value = MainActivity.ACTION_START_TIME == intent?.action
     }
 
     fun getLastSavedTimer(): Int {
-        return PreferenceManager.getDefaultSharedPreferences(getApplication())
-                .getInt(TimerViewModel.KEY_LAST_SELECTED_TIME, TimerViewModel.DEFAULT_TIME)
+        return pref.getInt(TimerViewModel.KEY_LAST_SELECTED_TIME, TimerViewModel.DEFAULT_TIME)
     }
 }

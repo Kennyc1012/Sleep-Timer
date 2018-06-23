@@ -14,8 +14,8 @@ import android.os.Binder
 import android.os.CountDownTimer
 import android.os.IBinder
 import android.preference.PreferenceManager
-import android.support.v4.app.NotificationCompat
-import android.support.v4.app.NotificationManagerCompat
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import android.text.format.DateUtils
 import com.kennyc.sleeptimer.options.OptionsViewModel
 import timber.log.Timber
