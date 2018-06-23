@@ -1,11 +1,12 @@
 package com.kennyc.sleeptimer.main
 
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import android.preference.PreferenceManager
 import android.text.format.DateUtils
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.kennyc.sleeptimer.R
 import com.kennyc.sleeptimer.TimerService
 import com.kennyc.sleeptimer.options.OptionsFragment
@@ -25,7 +26,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
+        val factory = MainViewModelFactory(PreferenceManager.getDefaultSharedPreferences(applicationContext))
+        viewModel = ViewModelProviders.of(this, factory).get(MainViewModel::class.java)
         viewModel.currentTab.observe(this, Observer { tab -> onTabChanged(tab) })
         viewModel.fromAppShortcut.observe(this, Observer { result -> onAppShortcut(result) })
         viewModel.checkForAppShortcut(intent)
