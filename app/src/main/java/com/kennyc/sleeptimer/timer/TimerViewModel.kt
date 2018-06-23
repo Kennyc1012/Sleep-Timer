@@ -1,11 +1,11 @@
 package com.kennyc.sleeptimer.timer
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.MutableLiveData
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import androidx.core.content.edit
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.MutableLiveData
 
 class TimerViewModel(app: Application) : AndroidViewModel(app) {
     companion object {
@@ -15,12 +15,12 @@ class TimerViewModel(app: Application) : AndroidViewModel(app) {
 
     private val sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(app)
 
-    val time = MutableLiveData<Pair<Int, Boolean>>()
+    val time = MutableLiveData<TimeUpdate>()
 
     val isTimerActive = MutableLiveData<Boolean>()
 
     fun setTime(currentTime: Int) {
-        time.value = Pair(currentTime, false)
+        time.value = TimeUpdate(currentTime, false)
     }
 
     fun setTimerActive(active: Boolean) {
@@ -33,6 +33,6 @@ class TimerViewModel(app: Application) : AndroidViewModel(app) {
 
     fun getLastTimerSelected() {
         val lastTime = sharedPreferences.getInt(KEY_LAST_SELECTED_TIME, DEFAULT_TIME)
-        time.value = Pair(lastTime, true)
+        time.value = TimeUpdate(lastTime, true)
     }
 }

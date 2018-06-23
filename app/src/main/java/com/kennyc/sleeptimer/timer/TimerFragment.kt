@@ -43,9 +43,9 @@ class TimerFragment : Fragment() {
         }
     }
 
-    private fun onTimeChange(result: Pair<Int, Boolean>) {
-        val time = result.first
-        val updateSeekBar = result.second
+    private fun onTimeChange(result:TimeUpdate) {
+        val time = result.time
+        val updateSeekBar = result.updateSeekBar
 
         when {
             time < 1 -> timerTime.text = getString(R.string.timer_less_than_minute)
