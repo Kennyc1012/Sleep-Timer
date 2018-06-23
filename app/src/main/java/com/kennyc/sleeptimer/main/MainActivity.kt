@@ -28,58 +28,53 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val factory = MainViewModelFactory(PreferenceManager.getDefaultSharedPreferences(applicationContext))
         viewModel = ViewModelProviders.of(this, factory).get(MainViewModel::class.java)
-        viewModel.currentTab.observe(this, Observer { tab -> onTabChanged(tab) })
-        viewModel.fromAppShortcut.observe(this, Observer { result -> onAppShortcut(result) })
+        viewModel.currentTab.observe(this, Observer { tab -> tab?.let { onTabChanged(it) } })
+        viewModel.fromAppShortcut.observe(this, Observer { result -> result?.let { onAppShortcut(it) } })
         viewModel.checkForAppShortcut(intent)
     }
 
-    private fun onTabChanged(menuItem: MenuItem?) {
-        menuItem?.let {
-            Timber.v("onTabChanged: $menuItem")
+    private fun onTabChanged(menuItem: MenuItem) {
+        Timber.v("onTabChanged: $menuItem")
 
-            when (it.itemId) {
-                R.id.tabTimer -> {
-                    supportActionBar?.title = getString(R.string.tab_timer)
-                    supportFragmentManager.beginTransaction()
-                            .replace(R.id.mainContent, TimerFragment())
-                            .commit()
-                }
-
-                R.id.tabOptions -> {
-                    supportActionBar?.title = getString(R.string.tab_options)
-                    supportFragmentManager.beginTransaction()
-                            .replace(R.id.mainContent, OptionsFragment())
-                            .commit()
-                }
-
-                else -> throw IllegalArgumentException("Unable to handle menu item with id " + it.itemId)
+        when (menuItem.itemId) {
+            R.id.tabTimer -> {
+                supportActionBar?.title = getString(R.string.tab_timer)
+                supportFragmentManager.beginTransaction()
+                        .replace(R.id.mainContent, TimerFragment())
+                        .commit()
             }
-        }
 
+            R.id.tabOptions -> {
+                supportActionBar?.title = getString(R.string.tab_options)
+                supportFragmentManager.beginTransaction()
+                        .replace(R.id.mainContent, OptionsFragment())
+                        .commit()
+            }
+
+            else -> throw IllegalArgumentException("Unable to handle menu item with id " + menuItem.itemId)
+        }
     }
 
-    private fun onAppShortcut(fromShortcut: Boolean?) {
-        fromShortcut?.let {
-            Timber.v("onAppShortcut: $it")
+    private fun onAppShortcut(fromShortcut: Boolean) {
+        Timber.v("onAppShortcut: $fromShortcut")
 
-            when (it) {
-                true -> {
-                    val lastTime = viewModel.getLastSavedTimer()
-                    val duration = lastTime * DateUtils.MINUTE_IN_MILLIS
-                    startService(TimerService.createIntent(applicationContext, duration))
-                    finish()
+        when (fromShortcut) {
+            true -> {
+                val lastTime = viewModel.getLastSavedTimer()
+                val duration = lastTime * DateUtils.MINUTE_IN_MILLIS
+                startService(TimerService.createIntent(applicationContext, duration))
+                finish()
+            }
+
+            else -> {
+                setContentView(R.layout.activity_main)
+                mainTabs.setOnNavigationItemSelectedListener { tab ->
+                    viewModel.onTabSelected(tab)
+                    true
                 }
 
-                else -> {
-                    setContentView(R.layout.activity_main)
-                    mainTabs.setOnNavigationItemSelectedListener { tab ->
-                        viewModel.onTabSelected(tab)
-                        true
-                    }
-
-                    if (viewModel.currentTab.value == null) mainTabs.selectedItemId = R.id.tabTimer
-                    supportActionBar?.title = getString(R.string.tab_timer)
-                }
+                if (viewModel.currentTab.value == null) mainTabs.selectedItemId = R.id.tabTimer
+                supportActionBar?.title = getString(R.string.tab_timer)
             }
         }
     }
