@@ -1,6 +1,7 @@
 package com.kennyc.sleeptimer.options
 
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.kennyc.sleeptimer.R
+import com.kennyc.sleeptimer.SleepTimerViewModelFactory
 import kotlinx.android.synthetic.main.fragment_options.*
 
 class OptionsFragment : Fragment() {
@@ -15,7 +17,8 @@ class OptionsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(OptionsViewModel::class.java)
+        val factory = SleepTimerViewModelFactory(PreferenceManager.getDefaultSharedPreferences(activity))
+        viewModel = ViewModelProviders.of(this, factory).get(OptionsViewModel::class.java)
         viewModel.screenOff.observe(this, Observer { value -> value?.let { onScreenOffToggle(it) } })
         viewModel.wiFiOff.observe(this, Observer { value -> value?.let { onWiFiToggle(it) } })
         viewModel.bluetoothOff.observe(this, Observer { value -> value?.let { onBluetoothToggle(it) } })

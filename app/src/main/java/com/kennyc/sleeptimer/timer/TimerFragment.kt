@@ -3,6 +3,7 @@ package com.kennyc.sleeptimer.timer
 import android.content.*
 import android.os.Bundle
 import android.os.IBinder
+import android.preference.PreferenceManager
 import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.kennyc.sleeptimer.R
+import com.kennyc.sleeptimer.SleepTimerViewModelFactory
 import com.kennyc.sleeptimer.TimerService
 import kotlinx.android.synthetic.main.fragment_timer.*
 import timber.log.Timber
@@ -27,7 +29,8 @@ class TimerFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(TimerViewModel::class.java)
+        val factory = SleepTimerViewModelFactory(PreferenceManager.getDefaultSharedPreferences(activity))
+        viewModel = ViewModelProviders.of(this, factory).get(TimerViewModel::class.java)
         viewModel.isTimerActive.observe(this, Observer { active -> active?.let { onTimerActive(it) } })
         viewModel.time.observe(this, Observer { time -> time?.let { onTimeChange(it) } })
         timerSeekBar.setOnValueChangedListener { time -> viewModel.setTime(time) }
@@ -43,7 +46,7 @@ class TimerFragment : Fragment() {
         }
     }
 
-    private fun onTimeChange(result:TimeUpdate) {
+    private fun onTimeChange(result: TimeUpdate) {
         val time = result.time
         val updateSeekBar = result.updateSeekBar
 

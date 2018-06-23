@@ -1,13 +1,11 @@
 package com.kennyc.sleeptimer.options
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.MutableLiveData
 import android.content.SharedPreferences
-import android.preference.PreferenceManager
 import androidx.core.content.edit
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 
-class OptionsViewModel(app: Application) : AndroidViewModel(app) {
+class OptionsViewModel(private val sharedPreferences: SharedPreferences) : ViewModel() {
 
     companion object {
         const val TAG = "OptionsViewModel"
@@ -16,8 +14,6 @@ class OptionsViewModel(app: Application) : AndroidViewModel(app) {
         const val KEY_BLUETOOTH_OFF = "$TAG.EXTRA.BLUETOOTH_OFF"
         const val KEY_AUDIO_OFF = "$TAG.EXTRA.AUDIO_OFF"
     }
-
-    private val sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(app)
 
     val screenOff = MutableLiveData<Boolean>()
     val wiFiOff = MutableLiveData<Boolean>()

@@ -1,19 +1,15 @@
 package com.kennyc.sleeptimer.timer
 
-import android.app.Application
 import android.content.SharedPreferences
-import android.preference.PreferenceManager
 import androidx.core.content.edit
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 
-class TimerViewModel(app: Application) : AndroidViewModel(app) {
+class TimerViewModel(private val sharedPreferences: SharedPreferences) : ViewModel() {
     companion object {
         const val KEY_LAST_SELECTED_TIME = "TimerViewModel.LAST_SELECTED_TIME"
         const val DEFAULT_TIME = 60
     }
-
-    private val sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(app)
 
     val time = MutableLiveData<TimeUpdate>()
 
