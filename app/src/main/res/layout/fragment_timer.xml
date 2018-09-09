@@ -19,12 +19,12 @@
         app:showCounter="false"
         app:value="60">
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/timerTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4.SleepTimer"
             tools:text="60 Minutes" />
 
     </ru.bullyboo.view.CircleSeekBar>

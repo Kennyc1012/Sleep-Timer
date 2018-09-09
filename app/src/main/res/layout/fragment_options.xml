@@ -26,11 +26,12 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:checked="true" />
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/option_home_screen"
                 android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                app:fontFamily="@font/g_sans"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/optionsHomeCB"
                 app:layout_constraintStart_toStartOf="parent"
@@ -52,11 +53,12 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:checked="true" />
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/option_wifi_off"
                 android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                app:fontFamily="@font/g_sans"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/optionsWiFiCB"
                 app:layout_constraintStart_toStartOf="parent"
@@ -78,11 +80,12 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:checked="true" />
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/option_bluetooth_off"
                 android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                app:fontFamily="@font/g_sans"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/optionsBluetoothCB"
                 app:layout_constraintStart_toStartOf="parent"
@@ -104,11 +107,12 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:checked="true" />
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/option_audio_off"
                 android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                app:fontFamily="@font/g_sans"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/optionsAudioCB"
                 app:layout_constraintStart_toStartOf="parent"

@@ -1,11 +1,20 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.MaterialComponents">
+    <style name="AppTheme" parent="Theme.MaterialComponents.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="TextAppearance.MaterialComponents.Tab.SleepTimer">
+        <item name="android:fontFamily">@font/g_sans_medium</item>
+        <item name="fontFamily">@font/g_sans_medium</item>
+    </style>
+
+    <style name="TextAppearance.MaterialComponents.Headline4.SleepTimer">
+        <item name="android:fontFamily">@font/google_sans_regular</item>
+        <item name="fontFamily">@font/google_sans_regular</item>
+    </style>
 </resources>

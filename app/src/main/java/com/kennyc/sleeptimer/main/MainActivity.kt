@@ -3,10 +3,10 @@ package com.kennyc.sleeptimer.main
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.text.format.DateUtils
-import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.google.android.material.tabs.TabLayout
 import com.kennyc.sleeptimer.R
 import com.kennyc.sleeptimer.SleepTimerViewModelFactory
 import com.kennyc.sleeptimer.TimerService
@@ -21,6 +21,8 @@ class MainActivity : AppCompatActivity() {
     companion object {
         const val TAG = "MainActivity"
         const val ACTION_START_TIME = "$TAG.ACTION.START_TIMER"
+        const val TAB_POSITION_TIMER = 0
+        const val TAB_POSITION_OPTIONS = 1
     }
 
     private lateinit var viewModel: MainViewModel
@@ -29,30 +31,28 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val factory = SleepTimerViewModelFactory(PreferenceManager.getDefaultSharedPreferences(applicationContext))
         viewModel = ViewModelProviders.of(this, factory).get(MainViewModel::class.java)
-        viewModel.currentTab.observe(this, Observer { tab -> tab?.let { onTabChanged(it) } })
+        viewModel.currentTabPosition.observe(this, Observer { tab -> tab?.let { onTabChanged(it) } })
         viewModel.fromAppShortcut.observe(this, Observer { result -> result?.let { onAppShortcut(it) } })
         viewModel.checkForAppShortcut(intent)
     }
 
-    private fun onTabChanged(menuItem: MenuItem) {
-        Timber.v("onTabChanged: $menuItem")
+    private fun onTabChanged(position: Int) {
+        Timber.v("onTabChanged: $position")
 
-        when (menuItem.itemId) {
-            R.id.tabTimer -> {
-                supportActionBar?.title = getString(R.string.tab_timer)
+        when (position) {
+            TAB_POSITION_TIMER -> {
                 supportFragmentManager.beginTransaction()
                         .replace(R.id.mainContent, TimerFragment())
                         .commit()
             }
 
-            R.id.tabOptions -> {
-                supportActionBar?.title = getString(R.string.tab_options)
+            TAB_POSITION_OPTIONS -> {
                 supportFragmentManager.beginTransaction()
                         .replace(R.id.mainContent, OptionsFragment())
                         .commit()
             }
 
-            else -> throw IllegalArgumentException("Unable to handle menu item with id " + menuItem.itemId)
+            else -> throw IllegalArgumentException("Unable to handle menu item with id $position")
         }
     }
 
@@ -69,13 +69,23 @@ class MainActivity : AppCompatActivity() {
 
             else -> {
                 setContentView(R.layout.activity_main)
-                mainTabs.setOnNavigationItemSelectedListener { tab ->
-                    viewModel.onTabSelected(tab)
-                    true
-                }
+                mainTabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+                    override fun onTabReselected(tab: TabLayout.Tab) {
+                        // Ignore
+                    }
 
-                if (viewModel.currentTab.value == null) mainTabs.selectedItemId = R.id.tabTimer
-                supportActionBar?.title = getString(R.string.tab_timer)
+                    override fun onTabUnselected(tab: TabLayout.Tab) {
+                        // Ignore
+                    }
+
+                    override fun onTabSelected(tab: TabLayout.Tab) {
+                        viewModel.onTabSelected(tab.position)
+                    }
+                })
+
+                if (viewModel.currentTabPosition.value == null) {
+                    viewModel.currentTabPosition.value = TAB_POSITION_TIMER
+                }
             }
         }
     }

@@ -1,24 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/mainTabs"
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="0dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/mainTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/app_name"
+            android:textSize="16sp"
+            app:fontFamily="@font/google_sans_medium" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/mainTabLayout"
+        style="@style/Widget.Design.TabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@color/colorPrimary"
-        app:itemBackground="@color/colorPrimary"
-        app:itemIconTint="#FFFFFF"
-        app:itemTextColor="#FFFFFF"
-        app:menu="@menu/menu_tabs" />
+        android:background="?attr/colorPrimary"
+        android:elevation="0dp"
+        app:tabIndicator="@null"
+        app:tabTextAppearance="@style/TextAppearance.MaterialComponents.Tab.SleepTimer">
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/mainTabTimer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tab_timer" />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/mainTabOptions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tab_options" />
+
+    </com.google.android.material.tabs.TabLayout>
 
     <FrameLayout
         android:id="@+id/mainContent"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/mainTabs" />
+        android:layout_height="match_parent" />
 
-</RelativeLayout>
+</LinearLayout>
