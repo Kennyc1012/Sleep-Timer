@@ -8,11 +8,11 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="TextAppearance.MaterialComponents.Tab.SleepTimer">
+    <style name="TextAppearance.MaterialComponents.Subtitle1.SleepTimer">
         <item name="android:fontFamily">@font/g_sans_medium</item>
         <item name="fontFamily">@font/g_sans_medium</item>
     </style>
-
+    
     <style name="TextAppearance.MaterialComponents.Headline4.SleepTimer">
         <item name="android:fontFamily">@font/google_sans_regular</item>
         <item name="fontFamily">@font/google_sans_regular</item>

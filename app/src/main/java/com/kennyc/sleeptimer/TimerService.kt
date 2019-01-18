@@ -14,9 +14,10 @@ import android.os.Binder
 import android.os.CountDownTimer
 import android.os.IBinder
 import android.preference.PreferenceManager
+import android.text.format.DateUtils
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import android.text.format.DateUtils
+import androidx.core.content.edit
 import com.kennyc.sleeptimer.options.OptionsViewModel
 import timber.log.Timber
 
@@ -32,6 +33,7 @@ class TimerService : Service() {
         const val EXTRA_CANCEL = "$TAG.EXTRA.CANCEL"
         const val NOTIFICATION_ID = 999
         const val CHANNEL_ID = "TimerNotificationId"
+        const val PREF_KEY_IS_IN_FOREGROUND = "pref_key_is_in_foreground"
 
         fun createIntent(context: Context, duration: Long): Intent {
             return Intent(context, TimerService::class.java).putExtra(EXTRA_DURATION, duration)
@@ -75,10 +77,13 @@ class TimerService : Service() {
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         Timber.v("onDestroy")
         countDownTimer?.cancel()
         unregisterReceiver(receiver)
+        PreferenceManager.getDefaultSharedPreferences(applicationContext).edit {
+            putBoolean(PREF_KEY_IS_IN_FOREGROUND, false)
+        }
+        super.onDestroy()
     }
 
     private fun startTimer(duration: Long) {

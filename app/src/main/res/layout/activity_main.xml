@@ -31,7 +31,7 @@
         android:background="?attr/colorPrimary"
         android:elevation="0dp"
         app:tabIndicator="@null"
-        app:tabTextAppearance="@style/TextAppearance.MaterialComponents.Tab.SleepTimer">
+        app:tabTextAppearance="@style/TextAppearance.MaterialComponents.Subtitle1.SleepTimer">
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/mainTabTimer"

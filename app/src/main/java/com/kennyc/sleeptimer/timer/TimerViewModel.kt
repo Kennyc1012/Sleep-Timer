@@ -2,8 +2,10 @@ package com.kennyc.sleeptimer.timer
 
 import android.content.SharedPreferences
 import androidx.core.content.edit
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.kennyc.sleeptimer.TimerService
 
 class TimerViewModel(private val sharedPreferences: SharedPreferences) : ViewModel() {
     companion object {
@@ -11,24 +13,35 @@ class TimerViewModel(private val sharedPreferences: SharedPreferences) : ViewMod
         const val DEFAULT_TIME = 60
     }
 
-    val time = MutableLiveData<TimeUpdate>()
+    private val _time = MutableLiveData<TimeUpdate>()
+    val time: LiveData<TimeUpdate> = _time
 
-    val isTimerActive = MutableLiveData<Boolean>()
+    private val _isTimerActive = MutableLiveData<Boolean>()
+    val isTimerActive: LiveData<Boolean> = _isTimerActive
 
     fun setTime(currentTime: Int) {
-        time.value = TimeUpdate(currentTime, false)
+        _time.value = TimeUpdate(currentTime, false)
     }
 
     fun setTimerActive(active: Boolean) {
-        isTimerActive.value = active
+        _isTimerActive.value = active
+        sharedPreferences.edit {
+            putBoolean(TimerService.PREF_KEY_IS_IN_FOREGROUND, active)
+        }
     }
 
     fun saveLastTimerSettings(time: Int) {
-        sharedPreferences.edit { putInt(KEY_LAST_SELECTED_TIME, time) }
+        sharedPreferences.edit {
+            putInt(KEY_LAST_SELECTED_TIME, time)
+        }
     }
 
     fun getLastTimerSelected() {
         val lastTime = sharedPreferences.getInt(KEY_LAST_SELECTED_TIME, DEFAULT_TIME)
-        time.value = TimeUpdate(lastTime, true)
+        _time.value = TimeUpdate(lastTime, true)
+    }
+
+    fun checkIfTimerIsActive() {
+        _isTimerActive.value = sharedPreferences.getBoolean(TimerService.PREF_KEY_IS_IN_FOREGROUND, false)
     }
 }

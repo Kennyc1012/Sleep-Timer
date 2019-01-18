@@ -41,9 +41,6 @@ class TimerFragment : Fragment() {
         }
 
         viewModel.getLastTimerSelected()
-        context?.let {
-            it.bindService(TimerService.createIntent(it, 0), connection, 0)
-        }
     }
 
     private fun onTimeChange(result: TimeUpdate) {
@@ -60,51 +57,32 @@ class TimerFragment : Fragment() {
     }
 
     private fun onTimerActive(active: Boolean) {
+        val cntxt = requireContext()
+
         when (active) {
             true -> {
                 viewModel.saveLastTimerSettings(timerSeekBar.value)
                 timerFab.setImageResource(R.drawable.ic_timer_off_white_24dp)
                 val duration = timerSeekBar.value * DateUtils.MINUTE_IN_MILLIS
-                context?.let { it.startService(TimerService.createIntent(it, duration)) }
+                cntxt.startService(TimerService.createIntent(cntxt, duration))
             }
 
             false -> {
                 timerFab.setImageResource(R.drawable.ic_done_white_24dp)
-                context?.let { it.stopService(TimerService.createIntent(it, 0)) }
+                cntxt.stopService(TimerService.createIntent(cntxt, 0))
             }
         }
     }
 
     override fun onResume() {
         super.onResume()
-        context?.registerReceiver(receiver, IntentFilter(TimerService.ACTION_BROADCAST_TIMER_END))
+        requireContext().registerReceiver(receiver, IntentFilter(TimerService.ACTION_BROADCAST_TIMER_END))
+        viewModel.checkIfTimerIsActive()
     }
 
     override fun onPause() {
         super.onPause()
-        context?.unregisterReceiver(receiver)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-
-        try {
-            context?.unbindService(connection)
-        } catch (ex: Exception) {
-            // Ignore
-        }
-    }
-
-    private val connection = object : ServiceConnection {
-
-        override fun onServiceConnected(className: ComponentName, service: IBinder) {
-            Timber.v("onServiceConnected")
-            viewModel.setTimerActive(true)
-        }
-
-        override fun onServiceDisconnected(arg0: ComponentName) {
-            Timber.v("onServiceDisconnected")
-        }
+        requireContext().unregisterReceiver(receiver)
     }
 
     private val receiver = object : BroadcastReceiver() {
